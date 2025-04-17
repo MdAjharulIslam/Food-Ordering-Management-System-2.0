@@ -583,7 +583,8 @@ void startFoodOrderingSystem() {
                 cout << "\n\t\t\t\tInvalid Input..!!! Please Enter a value between 0 to 11\n";
         }
 
-        cout << "\nWould you like to place another order? (Y/N): ";
+        cout << "\nWould you like to place another order? (Y): "<<endl;
+        cout<<"For logout press(N): "<<endl;
         char again;
         cin >> again;
         cin.ignore();
