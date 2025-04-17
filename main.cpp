@@ -555,10 +555,16 @@ void startFoodOrderingSystem() {
         cout << "Press '9' SNACKS" << endl;
         cout << "Press '10' SEAFOOD" << endl;
         cout << "Press '11' SOUPS" << endl;
+        cout << "Press '0' LOGOUT" << endl;
 
         cout << "\nPlease enter your choice: ";
         cin >> choice;
         cout << endl;
+
+        if (choice == 0) {
+            cout << "Logging out...\n";
+            break;  // exit the ordering loop and return to login/signup menu
+        }
 
         switch (choice) {
             case 1: burger(); break;
@@ -574,24 +580,29 @@ void startFoodOrderingSystem() {
             case 11: soups(); break;
             default:
                 system("cls");
-                cout << "\n\t\t\t\tInvalid Input..!!! Please Enter a value between 1 to 11\n";
+                cout << "\n\t\t\t\tInvalid Input..!!! Please Enter a value between 0 to 11\n";
         }
 
         cout << "\nWould you like to place another order? (Y/N): ";
         char again;
         cin >> again;
         cin.ignore();
-        if (again != 'Y' && again != 'y')
+        if (again != 'Y' && again != 'y') {
+            cout << "Logging out...\n";
             break;
+        }
+
         system("cls");
     }
 
     cout << "Thank you for using our Food Ordering System! " << endl;
 }
 
+
 int main() {
     char choice;
     while (true) {
+        cout << "\n\t\t\t\t*--------FOOD ORDERING MANAGEMENT SYSTEM--------*\n\n";
         cout << "\n1. Signup\n2. Login\n3. Exit\nChoose option: ";
         cin >> choice;
 
@@ -601,7 +612,7 @@ int main() {
             if (login()) {
                
                 startFoodOrderingSystem();
-                break;
+             
             }
         } else if (choice == '3') {
             return 0;
