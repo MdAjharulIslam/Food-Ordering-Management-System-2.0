@@ -488,51 +488,60 @@ int soups()
 
 
 
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
 void signup() {
-    string userID, username, password, existingID, existingUser, existingPass;
+    string phoneNumber, username, password, existingPhone, existingUser, existingPass;
 
-    cout << "Create a User ID: ";
-    cin >> userID;
+    cout << "Enter your Phone Number: ";
+    cin >> phoneNumber;
 
-    // Check if the user ID already exists
     ifstream infile("users.txt");
-    while (infile >> existingID >> existingUser >> existingPass) {
-        if (existingID == userID) {
-            cout << "User ID already exists! Please choose a different User ID.\n";
+    while (infile >> existingPhone >> ws && getline(infile, existingUser, '|') && infile >> existingPass) {
+        if (existingPhone == phoneNumber) {
+            cout << "Phone number already registered! Please use a different phone number.\n";
             return;
         }
     }
     infile.close();
 
+    cin.ignore();  // Clear newline character
     cout << "Create a Username: ";
-    cin >> username;
+    getline(cin, username);
+
     cout << "Create a Password: ";
     cin >> password;
 
     ofstream file("users.txt", ios::app);
-    file << userID << " " << username << " " << password << endl;
+    file << phoneNumber << " " << username << "|" << password << endl;  // username can contain spaces
     file.close();
 
     cout << "Signup successful! You can now log in." << endl;
 }
 
 bool login() {
-    string userID, password, storedID, storedUser, storedPass;
-    cout << "Enter User ID: ";
-    cin >> userID;
+    string phoneNumber, password, storedPhone, storedUser, storedPass;
+
+    cout << "Enter Phone Number: ";
+    cin >> phoneNumber;
     cout << "Enter Password: ";
     cin >> password;
 
     ifstream file("users.txt");
-    while (file >> storedID >> storedUser >> storedPass) {
-        if (storedID == userID && storedPass == password) {
+    while (file >> storedPhone >> ws && getline(file, storedUser, '|') && file >> storedPass) {
+        if (storedPhone == phoneNumber && storedPass == password) {
             cout << "Login successful!\n";
             return true;
         }
     }
-    cout << "Invalid User ID or Password.\n";
+
+    cout << "Invalid Phone Number or Password.\n";
     return false;
 }
+
 
 
 void startFoodOrderingSystem() {
@@ -542,7 +551,6 @@ void startFoodOrderingSystem() {
 
     while (true) {
         cout << "\nWhat would you like to order?\n\n";
-
         cout << "\n\t\t\t\t\t  *----------MENU----------*\n" << endl;
         cout << "Press '1' BURGER" << endl;
         cout << "Press '2' PARATHA ROLLS" << endl;
@@ -563,7 +571,7 @@ void startFoodOrderingSystem() {
 
         if (choice == 0) {
             cout << "Logging out...\n";
-            break;  // exit the ordering loop and return to login/signup menu
+            break;
         }
 
         switch (choice) {
@@ -583,8 +591,8 @@ void startFoodOrderingSystem() {
                 cout << "\n\t\t\t\tInvalid Input..!!! Please Enter a value between 0 to 11\n";
         }
 
-        cout << "\nWould you like to place another order? (Y): "<<endl;
-        cout<<"For logout press(N): "<<endl;
+        cout << "\nWould you like to place another order? (Y): ";
+        cout << "\nFor logout press(N): ";
         char again;
         cin >> again;
         cin.ignore();
@@ -599,7 +607,6 @@ void startFoodOrderingSystem() {
     cout << "Thank you for using our Food Ordering System! " << endl;
 }
 
-
 int main() {
     char choice;
     while (true) {
@@ -611,9 +618,7 @@ int main() {
             signup();
         } else if (choice == '2') {
             if (login()) {
-               
                 startFoodOrderingSystem();
-             
             }
         } else if (choice == '3') {
             return 0;
