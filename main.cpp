@@ -620,7 +620,7 @@ int main() {
         } else if (choice == '3') {
             return 0;
         } else {
-            cout << "Invalid choice.\n";
+            cout << "Invalid choice more.\n";
         }
     }
 
