@@ -1,0 +1,7 @@
+Customer Name: ajharul islam
+Phone Number: 01795277954
+Item Ordered: Naga Chicken Burger
+Quantity: 23
+Total Bill: 5750 BDT
+Date & Time: Wed Apr 30 01:30:06 2025
+----------------------------------------
