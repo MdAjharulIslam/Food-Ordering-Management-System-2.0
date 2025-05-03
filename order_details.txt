@@ -5,3 +5,11 @@ Quantity: 23
 Total Bill: 5750 BDT
 Date & Time: Wed Apr 30 01:30:06 2025
 ----------------------------------------
+Customer Name: ajharul islam
+Phone Number: 01795277954
+Date & Time: Sun May 04 01:26:38 2025
+Items Ordered:
+ - Item: Naga Chicken Burger, Quantity: 12, Bill: 3000 BDT
+ - Item: Aloo Paratha Roll, Quantity: 2, Bill: 300 BDT
+Total Bill: 3300 BDT
+----------------------------------------

@@ -3,15 +3,21 @@
 #include <string>
 #include <ctime>
 #include <fstream>
-#include <cctype> // For isdigit()
+#include <cctype> 
 using namespace std;
 
-char name[50];  // To store username from signup
-char phone[15]; // To store phone number (11 digits + null terminator)
+char name[50];  
+char phone[15]; 
 char ch;
 int qnty, sum, opt, n, a;
 
-// Helper function to validate phone number (exactly 11 digits, only numbers)
+
+string itemNames[50]; 
+int quantities[50];   
+int bills[50];        
+int orderCount = 0;  
+
+
 bool isValidPhoneNumber(const string &phoneNumber) {
     if (phoneNumber.length() != 11) {
         return false;
@@ -24,7 +30,7 @@ bool isValidPhoneNumber(const string &phoneNumber) {
     return true;
 }
 
-// Helper function to validate password (at least 6 characters)
+
 bool isValidPassword(const string &password) {
     return password.length() >= 6;
 }
@@ -32,6 +38,7 @@ bool isValidPassword(const string &password) {
 // Function declarations
 void displayDateTime();
 void writeOrderToFile(const string &customerName, const string &phoneNumber, const string &item, int quantity, int totalBill);
+void writeOrderToFile(const string &customerName, const string &phoneNumber, string itemNames[], int quantities[], int bills[], int orderCount, int totalBill);
 int burger();
 int parathaRolls();
 int shawarma();
@@ -47,10 +54,11 @@ int soups();
 void displayDateTime() {
     time_t currentTime;
     struct tm *localTime;
-    time(&currentTime); // Fixed typo from ¤tTime
+    time(&currentTime); 
     localTime = localtime(&currentTime);
-    cout << asctime(localTime); // Display formatted date and time
+    cout << asctime(localTime); 
 }
+
 
 void writeOrderToFile(const string &customerName, const string &phoneNumber, const string &item, int quantity, int totalBill) {
     ofstream outFile("order_details.txt", ios::app);
@@ -66,6 +74,31 @@ void writeOrderToFile(const string &customerName, const string &phoneNumber, con
         outFile << "Quantity: " << quantity << endl;
         outFile << "Total Bill: " << totalBill << " BDT" << endl;
         outFile << "Date & Time: " << asctime(localTime);
+        outFile << "----------------------------------------" << endl;
+        outFile.close();
+    } else {
+        cout << "Error: Unable to open file for writing!" << endl;
+    }
+}
+
+
+void writeOrderToFile(const string &customerName, const string &phoneNumber, string itemNames[], int quantities[], int bills[], int orderCount, int totalBill) {
+    ofstream outFile("order_details.txt", ios::app);
+    if (outFile.is_open()) {
+        time_t currentTime;
+        struct tm *localTime;
+        time(&currentTime);
+        localTime = localtime(&currentTime);
+
+        outFile << "Customer Name: " << customerName << endl;
+        outFile << "Phone Number: " << phoneNumber << endl;
+        outFile << "Date & Time: " << asctime(localTime);
+        outFile << "Items Ordered:\n";
+        for (int i = 0; i < orderCount; i++) {
+            outFile << " - Item: " << itemNames[i] << ", Quantity: " << quantities[i]
+                    << ", Bill: " << bills[i] << " BDT" << endl;
+        }
+        outFile << "Total Bill: " << totalBill << " BDT" << endl;
         outFile << "----------------------------------------" << endl;
         outFile.close();
     } else {
@@ -90,6 +123,10 @@ int burger() {
         if (a >= '1' && a <= '4') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -99,10 +136,18 @@ int burger() {
             case '3': itemName = "Cheese Blast Burger"; sum = 280 * qnty; break;
             case '4': itemName = "Classic Smash Burger"; sum = 220 * qnty; break;
             }
+            if (orderCount < 50) { // Ensure array bounds
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -128,6 +173,10 @@ int parathaRolls() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -136,10 +185,18 @@ int parathaRolls() {
             case '2': itemName = "Beef Kebab Roll"; sum = 200 * qnty; break;
             case '3': itemName = "Aloo Paratha Roll"; sum = 150 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -165,6 +222,10 @@ int shawarma() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -173,10 +234,18 @@ int shawarma() {
             case '2': itemName = "Beef Shawarma Wrap"; sum = 250 * qnty; break;
             case '3': itemName = "Spicy Naga Shawarma"; sum = 280 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -203,6 +272,10 @@ int biryani() {
         if (a >= '1' && a <= '4') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -212,10 +285,18 @@ int biryani() {
             case '3': itemName = "Mutton Biryani"; sum = 300 * qnty; break;
             case '4': itemName = "Hyderabadi Biryani"; sum = 280 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -241,6 +322,10 @@ int pizza() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -249,10 +334,18 @@ int pizza() {
             case '2': itemName = "Beef Pepperoni Pizza"; sum = 500 * qnty; break;
             case '3': itemName = "Cheese Burst Pizza"; sum = 480 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -278,6 +371,10 @@ int salad() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -286,10 +383,18 @@ int salad() {
             case '2': itemName = "Chicken Chatpati Salad"; sum = 220 * qnty; break;
             case '3': itemName = "Fresh Green Salad"; sum = 150 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -316,6 +421,10 @@ int drinks() {
         if (a >= '1' && a <= '4') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -325,10 +434,18 @@ int drinks() {
             case '3': itemName = "Fresh Mango Juice"; sum = 120 * qnty; break;
             case '4': itemName = "Coca-Cola"; sum = 50 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -354,6 +471,10 @@ int desserts() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -362,10 +483,18 @@ int desserts() {
             case '2': itemName = "Mishti Doi"; sum = 100 * qnty; break;
             case '3': itemName = "Falooda"; sum = 150 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -392,6 +521,10 @@ int snacks() {
         if (a >= '1' && a <= '4') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -401,10 +534,18 @@ int snacks() {
             case '3': itemName = "Shingara"; sum = 30 * qnty; break;
             case '4': itemName = "Fuchka"; sum = 60 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -430,7 +571,11 @@ int seafood() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
-            cout << endl;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
+            cout << endl; 
 
             string itemName;
             switch (a) {
@@ -438,10 +583,18 @@ int seafood() {
             case '2': itemName = "Ilish Bhapa"; sum = 350 * qnty; break;
             case '3': itemName = "Chingri Malaikari"; sum = 400 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -467,6 +620,10 @@ int soups() {
         if (a >= '1' && a <= '3') {
             cout << "How much quantity do you want? ";
             cin >> qnty;
+            if (qnty <= 0) {
+                cout << "Invalid quantity! Please enter a positive number.\n";
+                continue;
+            }
             cout << endl;
 
             string itemName;
@@ -475,10 +632,18 @@ int soups() {
             case '2': itemName = "Chicken Thai Soup"; sum = 150 * qnty; break;
             case '3': itemName = "Mutton Paya Soup"; sum = 180 * qnty; break;
             }
+            if (orderCount < 50) {
+                itemNames[orderCount] = itemName;
+                quantities[orderCount] = qnty;
+                bills[orderCount] = sum;
+                orderCount++;
+            } else {
+                cout << "Order limit reached! Cannot add more items.\n";
+            }
+
             cout << "You entered " << qnty << " " << itemName << "(s)" << endl;
-            cout << "The bill is: " << sum << "\t\t\t\t\t\tDate & Time: ";
+            cout << "The bill for this item is: " << sum << "\t\t\t\t\t\tDate & Time: ";
             displayDateTime();
-            writeOrderToFile(name, phone, itemName, qnty, sum);
 
             cout << "If you want to go back to 'Main Menu' press 'Backspace' or any other key to continue" << endl;
             ch = getch();
@@ -491,7 +656,7 @@ int soups() {
 void signup() {
     string phoneNumber, username, password, existingPhone, existingUser, existingPass;
 
-    // Validate phone number
+    
     do {
         cout << "Enter your Phone Number (exactly 11 digits): ";
         cin >> phoneNumber;
@@ -500,7 +665,6 @@ void signup() {
         }
     } while (!isValidPhoneNumber(phoneNumber));
 
-    // Check if phone number is already registered
     ifstream infile("users.txt");
     while (infile >> existingPhone >> ws && getline(infile, existingUser, '|') && infile >> existingPass) {
         if (existingPhone == phoneNumber) {
@@ -511,11 +675,11 @@ void signup() {
     }
     infile.close();
 
-    cin.ignore(); // Clear newline character
+    cin.ignore();
     cout << "Create a Username: ";
     getline(cin, username);
 
-    // Validate password
+    
     do {
         cout << "Create a Password (at least 6 characters): ";
         cin >> password;
@@ -535,7 +699,6 @@ void signup() {
 bool login() {
     string phoneNumber, password, storedPhone, storedUser, storedPass;
 
-    // Validate phone number format during login
     do {
         cout << "Enter Phone Number (exactly 11 digits): ";
         cin >> phoneNumber;
@@ -550,7 +713,7 @@ bool login() {
     ifstream file("users.txt");
     while (file >> storedPhone >> ws && getline(file, storedUser, '|') && file >> storedPass) {
         if (storedPhone == phoneNumber && storedPass == password) {
-            // Store username and phone number in global variables
+            
             if (storedUser.length() >= 50 || storedPhone.length() >= 15) {
                 cout << "Error: Username or phone number too long!\n";
                 file.close();
@@ -560,12 +723,12 @@ bool login() {
             for (size_t i = 0; i < storedUser.length(); i++) {
                 name[i] = storedUser[i];
             }
-            name[storedUser.length()] = '\0'; // Null terminate
-            // Manually copy phone number to phone
+            name[storedUser.length()] = '\0'; 
+            
             for (size_t i = 0; i < storedPhone.length(); i++) {
                 phone[i] = storedPhone[i];
             }
-            phone[storedPhone.length()] = '\0'; // Null terminate
+            phone[storedPhone.length()] = '\0'; 
             cout << "Login successful!\n";
             file.close();
             return true;
@@ -579,6 +742,8 @@ bool login() {
 
 void startFoodOrderingSystem() {
     int choice;
+    int totalBill = 0;
+    orderCount = 0; 
 
     cout << "\n\t\t\t\t*--------FOOD ORDERING MANAGEMENT SYSTEM--------*\n\n";
 
@@ -596,13 +761,34 @@ void startFoodOrderingSystem() {
         cout << "Press '9' SNACKS" << endl;
         cout << "Press '10' SEAFOOD" << endl;
         cout << "Press '11' SOUPS" << endl;
-        cout << "Press '0' LOGOUT" << endl;
+        cout << "Press '0' FINISH ORDER AND LOGOUT" << endl;
 
         cout << "\nPlease enter your choice: ";
         cin >> choice;
         cout << endl;
 
         if (choice == 0) {
+            if (orderCount == 0) {
+                cout << "No items ordered. Logging out...\n";
+                break;
+            }
+            
+            cout << "\nOrder Summary:\n";
+            cout << "----------------------------------------\n";
+            totalBill = 0;
+            for (int i = 0; i < orderCount; i++) {
+                cout << "Item: " << itemNames[i] << ", Quantity: " << quantities[i]
+                     << ", Bill: " << bills[i] << " BDT\n";
+                totalBill += bills[i];
+            }
+            cout << "Total Bill: " << totalBill << " BDT\n";
+            cout << "Date & Time: ";
+            displayDateTime();
+            cout << "----------------------------------------\n";
+
+            // Write to file
+            writeOrderToFile(name, phone, itemNames, quantities, bills, orderCount, totalBill);
+            cout << "Order placed successfully!\n";
             cout << "Logging out...\n";
             break;
         }
@@ -624,12 +810,33 @@ void startFoodOrderingSystem() {
                 cout << "\n\t\t\t\tInvalid Input..!!! Please Enter a value between 0 to 11\n";
         }
 
-        cout << "\nWould you like to place another order? (Y): ";
-        cout << "\nFor logout press(N): ";
+        cout << "\nWould you like to add another item to your order? (Y): ";
+        cout << "\nTo finish order and logout press (N): ";
         char again;
         cin >> again;
         cin.ignore();
         if (again != 'Y' && again != 'y') {
+            if (orderCount == 0) {
+                cout << "No items ordered. Logging out...\n";
+                break;
+            }
+            // Display order summary
+            cout << "\nOrder Summary:\n";
+            cout << "----------------------------------------\n";
+            totalBill = 0;
+            for (int i = 0; i < orderCount; i++) {
+                cout << "Item: " << itemNames[i] << ", Quantity: " << quantities[i]
+                     << ", Bill: " << bills[i] << " BDT\n";
+                totalBill += bills[i];
+            }
+            cout << "Total Bill: " << totalBill << " BDT\n";
+            cout << "Date & Time: ";
+            displayDateTime();
+            cout << "----------------------------------------\n";
+
+            // Write to file
+            writeOrderToFile(name, phone, itemNames, quantities, bills, orderCount, totalBill);
+            cout << "Order placed successfully!\n";
             cout << "Logging out...\n";
             break;
         }
