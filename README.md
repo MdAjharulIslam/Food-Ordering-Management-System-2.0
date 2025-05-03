@@ -8,5 +8,5 @@
 6. order history
 7. save auth data and order data in local database
 8. a resurebt owner can run his resturent with our app
-9. 
+9. multiple orders
    
