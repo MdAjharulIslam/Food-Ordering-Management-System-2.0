@@ -1,64 +1,46 @@
-🍽️ Food Ordering Management System (C++)
-A command-line based Food Ordering Management System built in C++ to simulate a restaurant's core functionalities. This system allows customers to browse food menus, place multiple orders, and allows restaurant owners to manage the system locally with user authentication and order tracking features.
+# 🍽️ Food Ordering Management System (C++)
 
-🚀 Features
-🔐 User Authentication
+A simple yet powerful **Food Ordering Management System** written in **C++**, designed to help restaurant owners manage customer orders, menus, and user authentication locally.
 
-Login & registration system for secure access.
+---
 
-📋 Order Menu
+## ✨ Features
 
-Displays food items to select and place an order.
+- 🔐 **Authentication**  
+  Secure login and registration for users.
 
-🍱 Food Categories and Subcategories
+- 📋 **Order Menu**  
+  Browse and select items to place orders.
 
-Organized menu with main categories and detailed subcategories for better user experience.
+- 🍽️ **Food Categories & Subcategories**  
+  Organized menu structure with multiple layers.
 
-⏰ Live Local Time
+- ⏰ **Live Local Time**  
+  Displays current local time during ordering.
 
-Shows current local time for each order and session.
+- 📜 **Order History**  
+  Track and view all previous orders.
 
-📜 Order History
+- 💾 **Local Storage**  
+  Auth and order data stored using file handling.
 
-Tracks and displays previous orders placed by a user.
+- 🧑‍🍳 **Restaurant Owner Support**  
+  Owners can run and manage their restaurant entirely through the app.
 
-💾 Local Database Storage
+- 🛒 **Multiple Orders**  
+  Place multiple items in a single session.
 
-Auth data and order records are saved locally using file handling in C++.
+---
 
-👨‍🍳 Restaurant Owner Mode
+## 🛠 Tech Stack
 
-A restaurant owner can manage and operate the restaurant using this app.
+- **Language**: C++
+- **Concepts**: File Handling, OOP, Structures & Classes, Time Manipulation
+- **Interface**: Terminal-based
 
-🛒 Multiple Orders Support
+---
 
-Users can place more than one order in a session.
+## 📁 Project Structure
 
-🛠️ Technologies Used
-Language: C++
-
-Concepts: File Handling, OOP, Structs/Classes, Time Library, Basic UI with terminal
-
-📁 File Structure (Example)
-css
-Copy
-Edit
-├── main.cpp
-├── auth.cpp
-├── menu.cpp
-├── order.cpp
-├── database.txt
-├── README.md
-🧑‍💼 Use Case
-A restaurant owner can install this lightweight C++ application and use it to manage food ordering operations — from customer login to order placement and historical data, without needing an internet connection.
-
-✅ Future Improvements
-Admin dashboard
-
-Inventory management
-
-Real-time notifications
-
-GUI version using C++ frameworks (e.g., Qt)
 
 
