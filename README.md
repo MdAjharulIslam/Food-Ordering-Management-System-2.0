@@ -42,5 +42,24 @@ A simple yet powerful **Food Ordering Management System** written in **C++**, de
 
 ## 📁 Project Structure
 
+📦 FoodOrderingSystem
+├── main.cpp
+├── auth.cpp / auth.h
+├── menu.cpp / menu.h
+├── order.cpp / order.h
+├── data/
+│ ├── users.txt
+│ └── orders.txt
+├── README.md
 
+##🧠 Future Enhancements
+GUI version with Qt or SFML
+
+Admin dashboard
+
+Search and filter menu
+
+Payment integration (simulation)
+
+Inventory tracking system
 
