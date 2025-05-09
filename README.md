@@ -1,4 +1,4 @@
-# 🍽️ Food Ordering Management System (C++)
+# 🍽️ Food Ordering Management System 
 
 A simple yet powerful **Food Ordering Management System** written in **C++**, designed to help restaurant owners manage customer orders, menus, and user authentication locally.
 
@@ -38,19 +38,9 @@ A simple yet powerful **Food Ordering Management System** written in **C++**, de
 - **Concepts**: File Handling, OOP, Structures & Classes, Time Manipulation
 - **Interface**: Terminal-based
 
----
 
-## 📁 Project Structure
 
-📦 FoodOrderingSystem
-├── main.cpp
-├── auth.cpp / auth.h
-├── menu.cpp / menu.h
-├── order.cpp / order.h
-├── data/
-│ ├── users.txt
-│ └── orders.txt
-├── README.md
+
 
 ##🧠 Future Enhancements
 GUI version with Qt or SFML
