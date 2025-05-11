@@ -53,3 +53,6 @@ Payment integration (simulation)
 
 Inventory tracking system
 
+Location tracting system
+
+
